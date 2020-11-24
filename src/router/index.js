@@ -11,29 +11,27 @@ const routes = [
     component: Home
   },
   {
-    path: '/clients/:id',
-    name : 'Client',
-    component: ()=>import('../components/Client')
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/clients',
-    name: 'RegisterClient',
-    component: ()=>import('../pages/Client-register')
+    name: 'Clients',
+    component:  () => import('../components/Clients')
   },
   {
-    path: '/transactions',
-    name: 'transaction',
-    component: () => import('../components/transactions')
+    path: '/clients/:id',
+    name: 'Client',
+    component: ()=>import('../components/Client')
   },
   {
-    path: '/transactions/new',
-    name: 'add-transaction',
-    component: ()=>import('../pages/add-transaction')
-  },
-  {
-    path: '/transactions/:id',
-    name: 'edit-transaction',
-    component: ()=> import('../pages/edit-transaction')
+    path: '/clients/add',
+    name: 'AddClient',
+    component: ()=>import('../pages/Add-Client')
   }
 ]
 
