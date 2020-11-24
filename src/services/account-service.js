@@ -1,11 +1,14 @@
-import http from './http-common'
+import http from './http-common';
 
-class AccountService{
-    create(clientId,data){
-        return http.post(`/clients/${clientId}/accounts`,data);
+class AccountService {
+    get(id) {
+        return http.get(`/clients/${id}/accounts`);
     }
-    getByClientId(clientId){
-        return http.get(`/clients/${clientId}/accounts`)
+    create(clientId,data) {
+        return http.post(`/clients/${clientId}/accounts`, data);
+    }
+    update(clientId, data){
+        return http.put(`/clients/${clientId}/accounts`, data);
     }
 }
 export default new AccountService();

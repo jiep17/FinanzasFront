@@ -24,14 +24,44 @@ const routes = [
     component:  () => import('../components/Clients')
   },
   {
-    path: '/clients/:id',
-    name: 'Client',
-    component: ()=>import('../components/Client')
-  },
-  {
     path: '/clients/add',
     name: 'AddClient',
     component: ()=>import('../pages/Add-Client')
+  },
+  {
+    path: '/clients/:id',
+    name : 'Client',
+    component: ()=>import('../components/Client')
+  },
+  {
+    path: '/accounts/:id/transactions',
+    name: 'transaction',
+    component: () => import('../components/transactions')
+  },
+  {
+    path: '/accounts/:accountId/transactions/new',
+    name: 'add-transaction',
+    component: ()=>import('../pages/add-transaction')
+  },
+  {
+    path: '/accounts/:accountId/transactions/pay',
+    name: 'pay-transaction',
+    component: ()=>import('../pages/pay-transaction')
+  },
+  {
+    path: '/accounts/:accountId/transactions/:id',
+    name: 'edit-transaction',
+    component: ()=> import('../pages/edit-transaction')
+  },
+  {
+    path: '/clients/:clientId/accounts',
+    name: 'Account',
+    component: ()=> import('../components/Account')
+  },
+  {
+    path: '/clients/:clientId/accounts/edit',
+    name: 'edit-account',
+    component: ()=> import('../pages/edit-account')
   }
 ]
 

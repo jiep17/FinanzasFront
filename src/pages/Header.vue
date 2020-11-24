@@ -5,7 +5,6 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn text @click="goToInicio()">Inicio</v-btn>
       <v-btn text @click="goToClients()">Clients</v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -23,9 +22,6 @@ name: "Header",
   methods: {
     goToClients(){
       this.$router.push({name: 'Clients'});
-    },
-    goToInicio(){
-      this.$router.push(({name: 'Home'}));
     },
     goToAddClient(){
       this.$router.push(({name: 'AddClient'}));

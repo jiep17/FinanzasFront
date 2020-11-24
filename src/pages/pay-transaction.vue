@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      <span class="headline">Edit Transaction</span>
+      <span class="headline">Pay Transaction</span>
     </v-card-title>
     <v-card-text>
       <v-container>
@@ -15,6 +15,9 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field v-model="item.amount" label="Amount"></v-text-field>
           </v-col>
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field v-model="item.transactionTypeId" label="TransactionType Id"></v-text-field>
+          </v-col>
         </v-row>
       </v-container>
     </v-card-text>
@@ -27,49 +30,39 @@
 </template>
 
 <script>
-import TransactionService from "@/services/transaction-service";
+import PaymentService from "@/services/payment-service";
 export default {
-  name: "edit-transaction",
-  data() {
+  name: "add-transaction",
+  data(){
     return {
       item: {
-        transactionTypeId: 1
+        transactionTypeId: 0,
       },
-      accountIdS : ''
+      accountId: ''
     }
   },
   methods: {
-    retrieveTransaction(accountId, id) {
-      this.accountIdS= accountId;
-      TransactionService.get(accountId, id)
-          .then((response) => {
-            this.item = response.data;
-            console.log('this.item', this.item)
-          })
-          .catch(e => {
-            console.log((e));
-          })
-    },
     save() {
       let transaction = this.item;
-      transaction.amount=Number(this.item.amount);
-      TransactionService.update(this.accountIdS,this.item.id, transaction)
+      transaction.amount= Number(this.item.amount)
+      transaction.transactionTypeId= Number(this.item.transactionTypeId)
+      PaymentService.pay(this.accountId,transaction)
           .then(() => {
             this.navigateToTransaction();
           })
-          .catch(e => {
+          .catch(e=> {
             console.log(e);
           })
     },
     close() {
       this.navigateToTransaction();
     },
-    navigateToTransaction() {
-      this.$router.push({name: 'transaction', params: { id:this.$route.params.accountId }});
+    navigateToTransaction(){
+      this.$router.push({name: 'transaction', params: { id: this.$route.params.accountId }});
     }
   },
-  created() {
-    this.retrieveTransaction(this.$route.params.accountId,this.$route.params.id );
+  created(){
+    this.accountId= this.$route.params.accountId;
   }
 }
 </script>
