@@ -7,14 +7,13 @@
             <v-container>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="item.id" label="Transaction Id"></v-text-field>
-                    </v-col>
-
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="item.address" label="Transaction Title"></v-text-field>
+                        <v-text-field v-model="item.date" label="Date"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                         <v-text-field v-model="item.description" label="Description"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="item.amount" label="Amount"></v-text-field>
                     </v-col>
                 </v-row>
             </v-container>
@@ -33,21 +32,28 @@
         name: "edit-transaction",
         data() {
             return {
-                item: { }
+                item: {
+                   transactionTypeId: 1
+                },
+                accountIdS : ''
             }
         },
         methods: {
-            retrieveTransaction(id) {
-                TransactionService.get(id)
+            retrieveTransaction(accountId, id) {
+                this.accountIdS= accountId;
+                TransactionService.get(accountId, id)
                     .then((response) => {
                         this.item = response.data;
+                        console.log('this.item', this.item)
                     })
                     .catch(e => {
                         console.log((e));
                     })
             },
             save() {
-                TransactionService.update(this.item.id, this.item)
+                let transaction = this.item;
+                transaction.amount=Number(this.item.amount);
+                TransactionService.update(this.accountIdS,this.item.id, transaction)
                     .then(() => {
                         this.navigateToTransaction();
                     })
@@ -59,11 +65,11 @@
                 this.navigateToTransaction();
             },
             navigateToTransaction() {
-                this.$router.push({name: 'transaction'});
+                this.$router.push({name: 'transaction', params: { id:this.$route.params.accountId }});
             }
         },
         created() {
-            this.retrieveTransaction(this.$route.params.id);
+            this.retrieveTransaction(this.$route.params.accountId,this.$route.params.id );
         }
     }
 </script>

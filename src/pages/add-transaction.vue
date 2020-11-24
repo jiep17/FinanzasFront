@@ -7,10 +7,16 @@
             <v-container>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="item.address" label="Address"></v-text-field>
+                        <v-text-field v-model="item.date" label="Date"></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
-                        <v-text-field v-model="item.description" label="Address"></v-text-field>
+                        <v-text-field v-model="item.description" label="Description"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="item.amount" label="Amount"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                        <v-text-field v-model="item.transactionTypeId" label="TransactionType Id"></v-text-field>
                     </v-col>
                 </v-row>
             </v-container>
@@ -29,12 +35,18 @@ import TransactionService from "@/services/transaction-service";
         name: "add-transaction",
         data(){
             return {
-                item: {}
+                item: {
+                    transactionTypeId: 0,
+                },
+                accountId: ''
             }
         },
         methods: {
             save() {
-                TransactionService.create(this.item)
+                let transaction = this.item;
+                transaction.amount= Number(this.item.amount)
+                transaction.transactionTypeId= Number(this.item.transactionTypeId)
+                TransactionService.create(this.accountId,transaction)
                 .then(() => {
                     this.navigateToTransaction();
                 })
@@ -46,8 +58,11 @@ import TransactionService from "@/services/transaction-service";
                 this.navigateToTransaction();
             },
             navigateToTransaction(){
-                this.$router.push('/transactions')
+                this.$router.push({name: 'transaction', params: { id: this.$route.params.accountId }});
             }
+        },
+        created(){
+            this.accountId= this.$route.params.accountId;
         }
     }
 </script>
